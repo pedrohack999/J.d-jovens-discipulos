@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J.D Jovens Discípulos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Define a fonte Inter para todo o corpo e o tema escuro */
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden; /* Evita rolagem horizontal */
+            background-color: #1A202C; /* Fundo principal escuro (gray-900 equivalente) */
+            color: #E2E8F0; /* Cor do texto principal (gray-200 equivalente) */
+        }
+        /* Estilos adicionais para rolagem suave */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Seção Hero: agora com cor sólida e imagem de fundo ajustada se necessário */
+        .hero-section {
+            background-color: #2D3748; /* Tom mais escuro para a seção hero (gray-800 equivalente) */
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Estilo para o menu mobile - hidden por padrão */
+        #mobile-menu {
+            display: none; /* Escondido por padrão */
+            flex-direction: column;
+            width: 100%;
+            background-color: rgba(26, 32, 44, 0.98); /* Fundo quase opaco para o menu mobile (gray-900 com transparência) */
+            padding: 1rem 0;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 40;
+            border-radius: 0 0 1rem 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            animation: slideDown 0.3s ease-out;
+        }
+
+        /* Keyframe para animação slide down */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Estilo para quando o menu mobile está aberto */
+        #mobile-menu.open {
+            display: flex;
+        }
+
+        /* Animação para o ícone do hambúrguer */
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 5px auto;
+            transition: all 0.3s ease-in-out;
+        }
+        .hamburger.is-active span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .hamburger.is-active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.is-active span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Animação para o texto do Hero */
+        .hero-text {
+            animation: fadeInScale 1s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Animação para os cards de atividades */
+        .activity-card {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInUp 0.6s ease-out forwards;
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Estilo para a animação de clique nos cards */
+        .activity-card.clicked-animation {
+            transform: scale(1.03);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Partículas de fundo para a seção Hero */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6); /* Partículas mais sutis em tema escuro */
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleAnimation linear infinite;
+        }
+
+        @keyframes particleAnimation {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0);
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(-20%) scale(1);
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100%) scale(1);
+            }
+        }
+
+        /* Cores de texto para títulos em seções claras */
+        .text-blue-800-dark {
+            color: #63B3ED; /* Um azul mais claro para títulos em fundos escuros */
+        }
+
+        /* Ajustes para cores de fundo e texto em seções */
+        .section-bg-dark {
+            background-color: #2D3748; /* Gray-800 */
+        }
+        .section-bg-darker {
+            background-color: #1A202C; /* Gray-900 */
+        }
+        .card-bg-dark {
+            background-color: #4A5568; /* Gray-700 */
+            color: #E2E8F0;
+        }
+        .text-blue-700-dark {
+            color: #63B3ED; /* Azul claro para subtítulos em cards */
+        }
+        .text-gray-700-dark {
+            color: #CBD5E0; /* Gray-300 para texto normal em cards */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+
+    <header class="bg-gradient-to-r from-blue-900 to-indigo-950 text-white shadow-lg sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center relative">
+            <a href="#" class="h-12 flex items-center"> <img src="uploaded:Screenshot_20250617-010204.jpg-d523371d-3ddd-4a95-bf54-c1eb53574274" alt="Logo J.D Jovens Discípulos" class="h-full w-auto"> </a>
+
+            <button id="hamburger-button" class="sm:hidden focus:outline-none p-2 rounded-lg hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div id="desktop-menu" class="hidden sm:flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-8 text-lg font-medium">
+                <a href="#quem-somos" class="hover:text-blue-400 transition duration-300 rounded-lg p-2">Quem Somos</a>
+                <a href="#atividades" class="hover:text-blue-400 transition duration-300 rounded-lg p-2">Atividades</a>
+                <a href="#regras" class="hover:text-blue-400 transition duration-300 rounded-lg p-2">Nossas Regras</a>
+                <a href="#participe-grupo" class="hover:text-blue-400 transition duration-300 rounded-lg p-2">Participe!</a>
+            </div>
+        </nav>
+
+        <div id="mobile-menu" class="absolute w-full flex-col items-center">
+            <a href="#quem-somos" class="block text-center py-3 px-4 hover:bg-blue-800 transition duration-300 w-full rounded-lg text-white font-medium">Quem Somos</a>
+            <a href="#atividades" class="block text-center py-3 px-4 hover:bg-blue-800 transition duration-300 w-full rounded-lg text-white font-medium">Atividades</a>
+            <a href="#regras" class="block text-center py-3 px-4 hover:bg-blue-800 transition duration-300 w-full rounded-lg text-white font-medium">Nossas Regras</a>
+            <a href="#participe-grupo" class="block text-center py-3 px-4 hover:bg-blue-800 transition duration-300 w-full rounded-lg text-white font-medium">Participe!</a>
+        </div>
+    </header>
+
+    <section class="hero-section text-white py-20 md:py-32 flex flex-col items-center justify-center min-h-screen-1/2 relative">
+        <div class="particles"></div>
+
+        <div class="absolute inset-0 z-0 bg-cover bg-center opacity-30" style="background-image: url('https://placehold.co/1200x600/1a202c/ffffff?text=Cenario+Biblico+Inspirador');"></div>
+        <div class="bg-black bg-opacity-70 p-8 md:p-12 rounded-2xl shadow-xl text-center max-w-2xl mx-4 z-10 hero-text">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">Conectando Jovens à Fé e Propósito</h1>
+            <p class="text-lg md:text-xl mb-8 opacity-90">
+                Somos um grupo de jovens apaixonados por Cristo, dedicados a crescer na fé e impactar o mundo ao nosso redor.
+            </p>
+            <a href="#atividades" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300">
+                Descubra Nossas Atividades
+            </a>
+        </div>
+    </section>
+
+    <section id="quem-somos" class="py-16 md:py-24 section-bg-dark">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-bold text-center text-blue-800-dark mb-12">Quem Somos</h2>
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/2">
+                    <img src="https://placehold.co/600x400/1a202c/ffffff?text=Comunidade+Fe+e+Uniao" alt="Comunidade Fé e União" class="rounded-2xl shadow-xl w-full h-auto object-cover">
+                </div>
+                <div class="md:w-1/2 text-lg leading-relaxed text-gray-200">
+                    <p class="mb-6">
+                        O J.D Jovens Discípulos nasceu com o desejo de criar um ambiente acolhedor e dinâmico para a juventude, onde a fé cristã possa ser explorada, aprofundada e vivida de forma autêntica. Acreditamos que cada jovem tem um potencial incrível para servir a Deus e à comunidade.
+                    </p>
+                    <p class="mb-6">
+                        Nossa missão é discipular, encorajar e equipar jovens para que se tornem seguidores dedicados de Jesus Cristo, impactando suas famílias, escolas, trabalhos e a sociedade com os valores do Reino de Deus. Promovemos o crescimento espiritual, o desenvolvimento de liderança e a construção de amizades sólidas baseadas em princípios bíblicos.
+                    </p>
+                    <p>
+                        Seja você um cristão de longa data ou alguém que está apenas começando a explorar a fé, o J.D é o seu lugar! Venha fazer parte da nossa família.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="atividades" class="py-16 md:py-24 section-bg-darker">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-bold text-center text-blue-800-dark mb-12">Nossas Atividades</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
+                <div class="rounded-2xl shadow-lg p-6 flex flex-col items-center text-center transform hover:scale-105 transition duration-300 activity-card card-bg-dark w-full max-w-md">
+                    <img src="https://placehold.co/100x100/3A4B62/63B3ED?text=%F0%9F%93%97" alt="Estudo Bíblico" class="w-24 h-24 mb-4 object-contain">
+                    <h3 class="text-2xl font-semibold text-blue-700-dark mb-3">Estudo Bíblico</h3>
+                    <p class="text-gray-700-dark">
+                        Aprofunde seu conhecimento da Palavra de Deus em nossos estudos realizados no **final de semana**.
+                    </p>
+                </div>
+                <div class="rounded-2xl shadow-lg p-6 flex flex-col items-center text-center transform hover:scale-105 transition duration-300 activity-card card-bg-dark w-full max-w-md" style="animation-delay: 0.1s;">
+                    <img src="https://placehold.co/100x100/3A4B62/63B3ED?text=%E2%9C%A8" alt="Devocional" class="w-24 h-24 mb-4 object-contain">
+                    <h3 class="text-2xl font-semibold text-blue-700-dark mb-3">Devocional</h3>
+                    <p class="text-gray-700-dark">
+                        Momentos de reflexão pessoal e conexão com Deus através da oração e meditação, às **terças e quintas-feiras**.
+                    </p>
+                </div>
+            </div>
+            <p class="text-center text-lg text-gray-400 mt-12 animate-pulse">
+                Em breve, teremos mais atividades incríveis para você! Fique ligado!
+            </p>
+        </div>
+    </section>
+
+    <section id="regras" class="py-16 md:py-24 section-bg-dark">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-blue-800-dark mb-12">Nossas Regras</h2>
+            <p class="text-lg leading-relaxed mb-8 max-w-3xl mx-auto text-gray-200">
+                Para garantir um ambiente de convivência harmonioso e focado em nossos princípios, o grupo J.D Jovens Discípulos segue algumas regras importantes. Clique no botão abaixo para acessar o documento completo com todas as diretrizes.
+            </p>
+            <a href="https://docs.google.com/document/d/1ryjYgeWzzb52g-l4_Koxhq7LSU8Tgqrg/edit?usp=drivesdk&ouid=107935178079702383389&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300">
+                Ver Regras Completas
+            </a>
+            <p class="text-sm text-gray-400 mt-4">
+                (Este link abrirá em uma nova aba para o documento no Google Docs)
+            </p>
+        </div>
+    </section>
+
+    <section id="participe-grupo" class="py-16 md:py-24 section-bg-darker">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-blue-800-dark mb-12">Participe do Nosso Grupo!</h2>
+            <p class="text-lg leading-relaxed mb-8 max-w-3xl mx-auto text-gray-200">
+                Quer se conectar ainda mais com os Jovens Discípulos? Junte-se ao nosso grupo de comunicação no WhatsApp para ficar por dentro de todas as novidades, eventos e interações.
+            </p>
+            <a href="https://chat.whatsapp.com/DMCRVOzGFGWA9VPLJDVmAZ" target="_blank" rel="noopener noreferrer" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300">
+                Acessar o Grupo do WhatsApp!
+            </a>
+            <p class="text-sm text-gray-400 mt-4">
+                (Este link abrirá o chat do WhatsApp)
+            </p>
+        </div>
+    </section>
+
+    <footer class="bg-gray-950 text-gray-400 py-8">
+        <div class="container mx-auto px-4 text-center text-sm">
+            <p>&copy; 2025 J.D Jovens Discípulos. Todos os direitos reservados.</p>
+            <p class="mt-2">Feito com <span class="text-red-500">&hearts;</span> para a juventude.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Obtém referências aos elementos do DOM
+        const hamburgerButton = document.getElementById('hamburger-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        const particlesContainer = document.querySelector('.particles');
+        const activityCards = document.querySelectorAll('.activity-card'); // Seleciona todos os cartões de atividade
+
+        // Adiciona um listener de evento de clique ao botão do hambúrguer
+        hamburgerButton.addEventListener('click', () => {
+            // Alterna a classe 'open' no menu móvel para mostrar/esconder
+            mobileMenu.classList.toggle('open');
+            // Alterna a classe 'is-active' no botão do hambúrguer para animar
+            hamburgerButton.classList.toggle('is-active');
+        });
+
+        // Adiciona um listener de evento de redimensionamento da janela
+        window.addEventListener('resize', () => {
+            // Se a largura da tela for maior que o breakpoint 'sm' do Tailwind (640px),
+            // esconde o menu móvel e remove a classe 'is-active' do botão do hambúrguer
+            if (window.innerWidth >= 640) {
+                mobileMenu.classList.remove('open');
+                hamburgerButton.classList.remove('is-active');
+            }
+        });
+
+        // Fecha o menu mobile quando um link é clicado
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                hamburgerButton.classList.remove('is-active');
+            });
+        });
+
+        // Função para criar partículas animadas na seção Hero
+        function createParticles() {
+            // Limpa partículas existentes antes de recriar
+            particlesContainer.innerHTML = '';
+            const numParticles = 30; // Número de partículas
+            for (let i = 0; i < numParticles; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 10 + 5; // Tamanho aleatório de 5px a 15px
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`; // Posição horizontal aleatória
+                particle.style.top = `${100 + Math.random() * 20}%`; // Inicia fora da tela, abaixo
+                particle.style.animationDuration = `${Math.random() * 5 + 5}s`; // Duração da animação de 5s a 10s
+                particle.style.animationDelay = `${Math.random() * numParticles * 0.1}s`; // Atraso para cada partícula
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Observador de Interseção para animar os cards de atividades
+        const observerOptions = {
+            root: null, // Observa a viewport
+            rootMargin: '0px',
+            threshold: 0.2 // Quando 20% do item estiver visível
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target); // Para de observar depois de animar
+                }
+            });
+        }, observerOptions);
+
+        // Adiciona o evento de clique para a animação de expansão nos cards
+        activityCards.forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.add('clicked-animation');
+                // Remove a classe após um pequeno atraso para que a transição retorne
+                setTimeout(() => {
+                    card.classList.remove('clicked-animation');
+                }, 300); // Duração que combina ou excede levemente a transição CSS
+            });
+        });
+
+        // Inicializa a animação das partículas e dos cards ao carregar a página
+        window.onload = function() {
+            createParticles();
+            const allActivityCards = document.querySelectorAll('.activity-card');
+            allActivityCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                observer.observe(card);
+            });
+        };
+    </script>
+</body>
+</html>
